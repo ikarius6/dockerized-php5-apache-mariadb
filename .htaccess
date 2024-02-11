@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks
+  RewriteEngine On 
+
+  # This line is to avoid https redirect in localhost
+  RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

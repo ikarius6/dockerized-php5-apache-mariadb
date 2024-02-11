@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  php-apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_apache_container
+    ports:
+      - "80:80"
+    #  - "443:443"
+    volumes:
+      - ../:/var/www/html
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.6.16
+    restart: always
+    container_name: mariadb_container
+    env_file:
+      - ../.env
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      
+volumes:
+  mariadb-data:
+  
